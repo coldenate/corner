@@ -6,7 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# ai gens
 
+*chatbot_model.h5
+*words.pkl
+*classes.pkl
+*whe.txt
 # Distribution / packaging
 .Python
 build/
@@ -128,3 +133,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+classes.pkl
+words.pkl

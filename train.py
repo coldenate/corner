@@ -8,21 +8,26 @@ from keras.models import Sequential
 import numpy as np
 import pickle
 import json
+import os
 import nltk
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
+
 
 # download punkt and wordnet
 # punkt is the pre-trained tokenizer we will use for the Enligsh language
 
 # we will be ignoring ? and ! because they are redundant as we are not yet interpreting intented tone (who do you think I am. Mr Musk!? Hell no!)
 
+
 # init
 words = []
 classes = []
 documents = []
 ignore_words = []
-data_file = open("intents.json").read()
+dirname = os.path.dirname(__file__)
+data_filename = os.path.join(dirname, 'intents.json')  # quick explanation - my directories are screwed so i hada to specify double the trouble
+data_file = open(data_filename).read()
 intents = json.loads(data_file)
 
 # tokenizing time
@@ -56,9 +61,12 @@ print(len(documents), "documents")
 print(len(classes), "classes")
 
 print(len(words), "lemmatized unique words")
-
-pickle.dump(words, open("words.pkl", "wb"))
-pickle.dump(classes, open("classes.pkl", "wb"))
+dirname = os.path.dirname(__file__)
+filenameobj1 = os.path.join(dirname, 'words.pkl')
+pickle.dump(words, open(filenameobj1, "wb"))
+dirname = os.path.dirname(__file__)
+filenameobj2 = os.path.join(dirname, 'classes.pkl')
+pickle.dump(classes, open(filenameobj2, "wb"))
 
 # time to initialize model training
 
@@ -115,6 +123,9 @@ callbacks = [earlystopping]
 # i don't know flask
 # like the bottle?
 
-hist = model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
-model.save("chatbot_model.h5", hist)
+hist = model.fit(np.array(train_x), np.array(train_y),
+                 epochs=200, batch_size=5, verbose=1)
+dirname = os.path.dirname(__file__)
+filenameobj = os.path.join(dirname, 'chatbot_model.h5')
+model.save(filenameobj, hist)
 print("Model Created!")
