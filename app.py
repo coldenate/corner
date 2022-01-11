@@ -49,16 +49,15 @@ def chatbot_response():
         name = msg[11:]
         ints = predict_class(msg, model)
         res1 = getResponse(ints, intents)
-        res =res1.replace("{n}",name)
+        return res1.replace("{n}",name)
     elif msg.startswith('hi my name is'):
         name = msg[14:]
         ints = predict_class(msg, model)
         res1 = getResponse(ints, intents)
-        res =res1.replace("{n}",name)
+        return res1.replace("{n}",name)
     else:
         ints = predict_class(msg, model)
-        res = getResponse(ints, intents)
-    return res
+        return getResponse(ints, intents)
 
 
 # chat functionalities
@@ -92,10 +91,7 @@ def predict_class(sentence, model):
     results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
     # sort by strength of probability
     results.sort(key=lambda x: x[1], reverse=True)
-    return_list = []
-    for r in results:
-        return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
-    return return_list
+    return [{"intent": classes[r[0]], "probability": str(r[1])} for r in results]
 
 
 def getResponse(ints, intents_json):
